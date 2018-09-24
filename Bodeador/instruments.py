@@ -100,7 +100,9 @@ class osciloscope:
 class generator:
     def __init__(self,direccion, rm):
         self.gen= rm.open_resource(direccion)
+        self.gen.write("OUTP:LOAD INF")
         self.gen.write("FUNC SIN")
+
     def setVoltage(self,vol):
         self.gen.write("VOLT "+str(vol))
     def setOffset(self, value):
