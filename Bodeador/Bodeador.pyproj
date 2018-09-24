@@ -4,7 +4,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>ef2a12ed-3f10-4835-aaf3-03d6f0349783</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>Bodeador.py</StartupFile>
+    <StartupFile>main.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
@@ -25,6 +25,9 @@
     <Compile Include="bodeUserInterface.py" />
     <Compile Include="dataManager.py" />
     <Compile Include="instruments.py" />
+    <Compile Include="main.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="meterTechnician.py" />
     <Compile Include="userData.py" />
   </ItemGroup>
