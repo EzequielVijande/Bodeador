@@ -29,6 +29,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="meterTechnician.py" />
+    <Compile Include="prueba.py" />
+    <Compile Include="pruebaGui.py" />
+    <Compile Include="pruebaIngeniero.py" />
     <Compile Include="userData.py" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
