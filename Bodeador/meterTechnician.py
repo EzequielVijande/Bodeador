@@ -18,13 +18,36 @@ class meterTechnician:
         self.v1 = np.array[]
         self.v2 = np.array[]
         self.fase = np.array[]
-        self.MyInstrumentsData = instrumentsData()
+        self.MyInstrumentsData = self.UpdateInstruments()
+        self.prepareInstruments()
         self.MyMeasurementsData = measurementsData()
 
-    def prepareInstruments(self, instrumentData):
-        self.MyInstrumentsData = instrumentData
-        self.osc = osciloscope(MyinstrumentsData.oscIndex)
-        self.gen = generator(MyinstrumentsData.genIndex)
+    def UpdateInstruments(self):
+        first_instrument_name = self.instruments[0]     #Obtengo las direcciones de
+        second_instrument_name = self.instruments[1]    #ambos instrumentos
+        self.first_instrument= self.rm.open_resource(first_instrument_name) #Establezco la conexion a ambos instrumentos
+        self.second_instrument= self.rm.open_resource(second_instrument_name)
+
+        Id1= str(self.first_instrument.query('*IDN?'))
+        strings1= Id1.split(',')
+        model1 = strings1[1]
+        if model1[0] =='3': #si el modelo empieza con 3 es un generadaor
+            gen_index=0
+            osc_index=1
+        else:               #caso contrario asumo que es un osciloscopio
+            gen_index=1
+            osc_index=0
+        return instrumentsData(osc_index, gen_index)
+
+
+    def prepareInstruments(self):
+        if (MyinstrumentsData.oscIndex)==0:
+            self.osc = osciloscope(self.first_instrument)
+            self.gen = generator(self.second_instrument)
+        else:
+            self.osc = osciloscope(self.second_instrument)
+            self.gen = generator(self.first_instrument)
+        
 
     def prepareMeasurement(self, measurementData):
         self.MyMeasurementsData = measurementData
