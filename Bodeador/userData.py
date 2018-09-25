@@ -33,3 +33,12 @@ class measurementsData:
         self.ACcouple = False
         self.DCcouple = True
 
+class preferenceData:
+    def __init__(self):
+        self.userWantExcel = False
+        self.userWantGraphMag = False
+        self.userWantGraphFase = False
+
+        self.userWantContinue = False
+        self.excelName = ""
+

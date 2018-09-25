@@ -1,0 +1,68 @@
+##################
+ from six.moves import tkinter as tk
+>>> root = tk.Tk()
+>>> variable = tk.StringVar()
+>>> def prueba():
+...     print("Se ha elegido la opcion" + variable.get())
+...
+>>> radiobutton1 = tk.Radiobutton(text="Opcion 1", variable=variable, value=1, command=prueba)
+>>> radiobutton2 = tk.Radiobutton(text="Opcion 2", variable=variable, value=2, command=prueba)
+>>> radiobutton3 = tk.Radiobutton(text="Opcion 3", variable=variable, value=3, command=prueba)
+>>> radiobutton1.pack()
+>>> radiobutton2.pack()
+>>> radiobutton3.pack()
+>>> variable.get()
+
+######################
+
+from six.moves import tkinter as tk
+
+def funcion():
+    print("Excelente")
+
+root = tk.Tk()
+boton = tk.Button(root, text="Que te parece la guía?", command=funcion)
+boton.pack()
+root.mainloop()
+
+############
+
+ from six.moves import tkinter as tk
+>>> root = tk.Tk()
+>>> bool_var = tk.BooleanVar()
+>>> bool_var.get()
+0
+>>> check = tk.Checkbutton(root, text="Probando", variable=bool_var)
+>>> check.pack()
+>>> bool_var.get()
+True
+>>> bool_var.get()
+False
+>>>
+
+################
+
+> from six.moves import tkinter as tk
+>>> root = tk.Tk()
+>>> campo_de_texto = tk.Entry(root)
+>>> campo_de_texto.pack()
+>>> # En este caso escribi "Hola Mundo!!!"
+>>> campo_de_texto.get()
+'Hola Mundo!!!'
+>>>
+
+###############
+
+def scale_onChange(value):
+    print(value)
+    print(type(value))
+    if(value >= 10):
+        print "The value is ten"
+
+master = Tk()
+scale = Scale(from_=0, to=100, tickinterval=20, orient=HORIZONTAL, command=scale_onChange)
+scale.pack()
+
+mainloop()
+
+#######
