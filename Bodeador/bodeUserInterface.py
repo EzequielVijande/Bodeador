@@ -21,11 +21,6 @@ X10 = 2
 
 class graphicalInterface:
     def __init__(self):
-<<<<<<< HEAD
-        #userData a completar
-=======
-        #userData
->>>>>>> 6c3bbaa813c84119e88e72f84b727c47018fcf3b
         self.measData = measurementsData()
         self.pData = preferenceData()
 
@@ -303,7 +298,7 @@ class graphicalInterface:
     def refreshVoffset_slider(self, event):
         self.measData.Voffset = self.slide_voffset.get() + (self.slide_mvoffset.get() / 1000)
 
-    def refreshNpoints_slider(self):
+    def refreshNpoints_slider(self,event):
         self.measData.numberOfPoints = self.slide_npoints.get()
 
     
@@ -315,7 +310,7 @@ class graphicalInterface:
         self.comboTime2Establish.current(2)
         self.comboTime2Establish.grid(row = 11, column = 2)
 
-    def refreshTime2Establish(self):
+    def refreshTime2Establish(self,event):
         self.measData.establish = float(self.comboTime2Establish.get())
         
     
