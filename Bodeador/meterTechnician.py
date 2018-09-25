@@ -1,5 +1,6 @@
 #osciloscopio
 import visa as v
+import time
 from userData import instrumentsData
 from userData import measurementsData
 from instruments import osciloscope
@@ -70,6 +71,7 @@ class meterTechnician:
         self.gen.setOutputOn()
         for i in self.f:
             self.gen.setFrequency(i)
+            time.sleep(self.MyMeasurementsData.establish) #tiempo de establecimiento
             self.osc.setTimeScale((1/i)*ajusteEscalaX)
             self.osc.changeChannel(1)
             self.osc.setScale(self.osc.measPk2Pk()/ajusteEscalaY)
@@ -77,7 +79,7 @@ class meterTechnician:
             self.osc.changeChannel(2)
             self.osc.setScale(self.osc.measPk2Pk()/ajusteEscalaY)
             self.v2.append(self.osc.measPk2Pk())
-            self.fase.append(self.osc.measFase())
+            self.fase.append(self.osc.measFase(1))
         
     def prepareTrigger(self):
         self.osc.setTriggerCero()
@@ -131,10 +133,9 @@ class meterTechnician:
         self.osc.setScale(self.MyMeasurementsData.Vin/ajusteEscalaY)
         self.setProbe() #X1 o X10
         self.osc.setBWL()
-        self.osc.setCoupling()
+        self.setCoupling()
 
     def prepareGenerator(self):
-        self.prepareGenerator()
         self.gen.setOffset(self.MyMeasurementsData.Voffset)
         self.gen.setVoltage(self.MyMeasurementsData.Vin)
         self.gen.setFrequency(self.MyMeasurementsData.fMin)
