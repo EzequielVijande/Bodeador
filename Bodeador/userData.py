@@ -1,8 +1,8 @@
 #userData
 class instrumentsData:
-    def __init__(self):
-        self.oscIndex = 1
-        self.genIndex = 2
+    def __init__(self,o_index,g_index):
+        self.oscIndex = o_index
+        self.genIndex = g_index
 
 class measurementsData:
     def __init__(self):

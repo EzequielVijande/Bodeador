@@ -1,9 +1,18 @@
 #instruments
 import visa as v
+import copy
 
 class osciloscope:
+<<<<<<< HEAD
     def __init__(self, direccion):
         self.rm.open_resource(direccion)
+=======
+    def __init__(self, osc_res):
+        self.osc= osc_res
+        self.osc.write(":TRIG:SWE AUTO")
+        self.osc.write("TRIG:EDGE:COUP AC")
+        self.canalString= "CHAN1"
+>>>>>>> d988de27a0aa91909d12148c0c6a1f4ea29aa955
 
     #METODOS DE COMANDOS OSCILOSCOPIO
 
@@ -83,6 +92,24 @@ class osciloscope:
 
 
 class generator:
+<<<<<<< HEAD
     def __init__(self):
         self.rm.open_resource(direccion)
+=======
+    def __init__(self,gen_res):
+        self.gen= gen_res
+        self.gen.write("OUTP:LOAD INF")
+        self.gen.write("FUNC SIN")
+
+    def setVoltage(self,vol):
+        self.gen.write("VOLT "+str(vol))
+    def setOffset(self, value):
+        self.gen.write("VOLT:OFFS "+str(value))
+    def setFrequency(self, f):
+        self.gen.write("FREQ "+str(f))
+    def setOutputOff(self):
+         self.gen.write("OUTP OFF")
+    def setOutputOn(self):
+         self.gen.write("OUTP ON")
+>>>>>>> d988de27a0aa91909d12148c0c6a1f4ea29aa955
 

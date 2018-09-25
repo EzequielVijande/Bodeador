@@ -1,5 +1,6 @@
 #osciloscopio
 import visa as v
+import time
 from userData import instrumentsData
 from userData import measurementsData
 from instruments import osciloscope
@@ -18,13 +19,36 @@ class meterTechnician:
         self.v1 = np.array[]
         self.v2 = np.array[]
         self.fase = np.array[]
-        self.MyInstrumentsData = instrumentsData()
+        self.MyInstrumentsData = self.UpdateInstruments()
+        self.prepareInstruments()
         self.MyMeasurementsData = measurementsData()
 
-    def prepareInstruments(self, instrumentData):
-        self.MyInstrumentsData = instrumentData
-        self.osc = osciloscope(MyinstrumentsData.oscIndex)
-        self.gen = generator(MyinstrumentsData.genIndex)
+    def UpdateInstruments(self):
+        first_instrument_name = self.instruments[0]     #Obtengo las direcciones de
+        second_instrument_name = self.instruments[1]    #ambos instrumentos
+        self.first_instrument= self.rm.open_resource(first_instrument_name) #Establezco la conexion a ambos instrumentos
+        self.second_instrument= self.rm.open_resource(second_instrument_name)
+
+        Id1= str(self.first_instrument.query('*IDN?'))
+        strings1= Id1.split(',')
+        model1 = strings1[1]
+        if model1[0] =='3': #si el modelo empieza con 3 es un generadaor
+            gen_index=0
+            osc_index=1
+        else:               #caso contrario asumo que es un osciloscopio
+            gen_index=1
+            osc_index=0
+        return instrumentsData(osc_index, gen_index)
+
+
+    def prepareInstruments(self):
+        if (MyinstrumentsData.oscIndex)==0:
+            self.osc = osciloscope(self.first_instrument)
+            self.gen = generator(self.second_instrument)
+        else:
+            self.osc = osciloscope(self.second_instrument)
+            self.gen = generator(self.first_instrument)
+        
 
     def prepareMeasurement(self, measurementData):
         self.MyMeasurementsData = measurementData
@@ -47,6 +71,7 @@ class meterTechnician:
         self.gen.setOutputOn()
         for i in self.f:
             self.gen.setFrequency(i)
+            time.sleep(self.MyMeasurementsData.establish) #tiempo de establecimiento
             self.osc.setTimeScale((1/i)*ajusteEscalaX)
             self.osc.changeChannel(1)
             self.osc.setScale(self.osc.measPk2Pk()/ajusteEscalaY)
@@ -54,7 +79,7 @@ class meterTechnician:
             self.osc.changeChannel(2)
             self.osc.setScale(self.osc.measPk2Pk()/ajusteEscalaY)
             self.v2.append(self.osc.measPk2Pk())
-            self.fase.append(self.osc.measFase())
+            self.fase.append(self.osc.measFase(1))
         
     def prepareTrigger(self):
         self.osc.setTriggerCero()
@@ -108,10 +133,9 @@ class meterTechnician:
         self.osc.setScale(self.MyMeasurementsData.Vin/ajusteEscalaY)
         self.setProbe() #X1 o X10
         self.osc.setBWL()
-        self.osc.setCoupling()
+        self.setCoupling()
 
     def prepareGenerator(self):
-        self.prepareGenerator()
         self.gen.setOffset(self.MyMeasurementsData.Voffset)
         self.gen.setVoltage(self.MyMeasurementsData.Vin)
         self.gen.setFrequency(self.MyMeasurementsData.fMin)
