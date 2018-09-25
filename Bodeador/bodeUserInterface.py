@@ -22,7 +22,6 @@ X10 = 2
 class graphicalInterface:
     def __init__(self):
         #userData
-        self.instData = instrumentsData()
         self.measData = measurementsData()
         self.pData = preferenceData()
         #graphicalResources
