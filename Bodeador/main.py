@@ -1,11 +1,8 @@
-import visa
-from instruments import osciloscope
-from instruments import generator
 
-
-direccion = "USB0::0x0957::0x0407::MY44013183::0::INSTR"
-rm= visa.ResourceManager()
-inst= generator(direccion,rm)
-inst.setVoltage(1)
-inst.setOffset(0)
-print(inst.gen.query('*IDN?'))
+from dataManager import dataManager
+from meterTechnician import meterTechnician
+#import bodeUserInterface import graphicalInterface
+from userData import instrumentsData
+from userData import measurementsData
+#inicializacion de clases
+gui = graphicalInterface()

@@ -21,7 +21,11 @@ X10 = 2
 
 class graphicalInterface:
     def __init__(self):
+<<<<<<< HEAD
         #userData a completar
+=======
+        #userData
+>>>>>>> 6c3bbaa813c84119e88e72f84b727c47018fcf3b
         self.measData = measurementsData()
         self.pData = preferenceData()
 
