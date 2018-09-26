@@ -1,8 +1,8 @@
 #userData
 class instrumentsData:
-    def __init__(self,o_index,g_index):
-        self.oscIndex = o_index
-        self.genIndex = g_index
+    def __init__(self):
+        self.oscIndex = 1
+        self.genIndex = 2
 
 class measurementsData:
     def __init__(self):
@@ -20,6 +20,7 @@ class measurementsData:
         self.LFrejectOn = False
 
         self.establish = 1 #segundos
+        self.autoEstablish = False
 
         self.acqHRES = True
         self.acqNORM = False
@@ -40,5 +41,5 @@ class preferenceData:
         self.userWantGraphFase = False
 
         self.userWantContinue = False
-        self.excelName = ""
+        self.excelName = "frecuencyResponse"
 

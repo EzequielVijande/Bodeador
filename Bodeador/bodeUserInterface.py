@@ -21,6 +21,7 @@ X10 = 2
 
 class graphicalInterface:
     def __init__(self):
+        #userData a completar
         self.measData = measurementsData()
         self.pData = preferenceData()
 
@@ -34,7 +35,7 @@ class graphicalInterface:
         self.fMax = 0
         #graphicalResources
         self.raiz = Tk()
-        self.raiz.geometry('960x620')
+        self.raiz.geometry('960x580')
 
         self.raiz.resizable(width=True,height=True)
         self.raiz.title('Auto Bode Software')
@@ -99,7 +100,6 @@ class graphicalInterface:
 
     def refreshFminScale(self):
         aux = self.scaleStartF.get()
-        print(aux)
         if aux == Hz:
             self.isMinScaleHz = True
             self.isMinScaleKHz = False
@@ -142,16 +142,6 @@ class graphicalInterface:
             self.measData.ACcouple = False
             self.measData.DCcouple = True
 
-
-
-    def refreshSliderStartF(self):
-        print("bloque sin completar")
-
-    def refreshSliderStopF(self):
-        print("bloque sin completar")
-
-    def refreshCouplingMode(self):
-        print("bloque sin completar")
 
     def refreshAcqMode(self):
         aux = self.acq.get()
@@ -208,7 +198,7 @@ class graphicalInterface:
         
         self.refreshTime2Establish() #se obtiene el valor de un combobox ya que dicho combobox no puede
                                     #obtener su valor por si solo
-        self.setExcelName()
+        self.setExcelName()  #se lee un textmessage
         self.pData.userWantContinue = True
         self.raiz.destroy()
 
@@ -228,13 +218,13 @@ class graphicalInterface:
         self.graphFase_checkButton = tk.Checkbutton(self.raiz, text="Graph phase diagram", 
                                                                         variable=self.bool_graphFase, command = self.refreshGraphFasePreference).grid(row = 9, column = 6)
 
-    def refreshExcelPreference(self, event):
+    def refreshExcelPreference(self):
         self.pData.userWantExcel = self.bool_excel.get()
 
-    def refreshGraphMagPreference(self, event):
+    def refreshGraphMagPreference(self):
         self.pData.userWantGraphMag = self.bool_graphMag.get()
 
-    def refreshGraphFasePreference(self, event):
+    def refreshGraphFasePreference(self):
         self.pData.userWantGraphFase = self.bool_graphFase.get()
 
     def placeEntryText(self):
@@ -283,7 +273,6 @@ class graphicalInterface:
                                         variable = self.slide_npoints, command=self.refreshNpoints_slider).grid(row = 13, column = 2)
 
     def refreshStartF_slider(self, event):
-        print("pase por el callback")
         self.fMin = self.slide_fmin.get()
         self.setFinalfMin()
 
@@ -292,13 +281,12 @@ class graphicalInterface:
         self.setFinalfMax()
 
     def refreshVin_slider(self, event):
-        print("se ha pasado por refreshVin_slider")
         self.measData.Vin = self.slide_vin.get() + (self.slide_mvin.get() / 1000)
 
     def refreshVoffset_slider(self, event):
         self.measData.Voffset = self.slide_voffset.get() + (self.slide_mvoffset.get() / 1000)
 
-    def refreshNpoints_slider(self,event):
+    def refreshNpoints_slider(self, event):
         self.measData.numberOfPoints = self.slide_npoints.get()
 
     
@@ -306,12 +294,17 @@ class graphicalInterface:
     def placeComboBoxes(self):
         self.labelTime2Establish = tk.Label(self.raiz, text = "Time to Establishment (seg)").grid(row = 11, column = 1)
         self.comboTime2Establish = ttk.Combobox(self.raiz)
-        self.comboTime2Establish["values"] = [0.5, 1, 1.5, 2, 2.5, 3, 4, 5, 10, 15, 20] #tiempo en segundos
+        self.comboTime2Establish["values"] = ['auto', '0.5', '1', '1.5', '2', '2.5', '3', '4', '5', '10', '15', '20'] #tiempo en segundos
         self.comboTime2Establish.current(2)
         self.comboTime2Establish.grid(row = 11, column = 2)
 
-    def refreshTime2Establish(self,event):
-        self.measData.establish = float(self.comboTime2Establish.get())
+    def refreshTime2Establish(self):
+        if self.comboTime2Establish.get() == 'auto':
+            self.measData.autoEstablish = True
+        else:
+            self.measData.establish = float(self.comboTime2Establish.get())
+            self.measData.autoEstablish = False
+        
         
     
 
