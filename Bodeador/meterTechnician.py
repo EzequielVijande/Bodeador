@@ -11,6 +11,8 @@ Ncuadrados = 10 #numero de cuadrados del osciloscopio
 ajusteEscalaY = (Ncuadrados - 4)
 ajusteEscalaX = 1.5/Ncuadrados
 maxNpoints = 300
+periods2Establish = 10
+LOOP_LIMITER = 500
 
 class meterTechnician:
     def __init__(self,m_Data):
@@ -71,10 +73,11 @@ class meterTechnician:
         self.gen.setOutputOn()
         for i in self.f:
             self.gen.setFrequency(int(i))
-            time.sleep(self.MyMeasurementsData.establish) #tiempo de establecimiento
+            self.waitEstablishment(int(i))
             self.osc.setTimeScale((1/int(i))*ajusteEscalaX)
             self.osc.changeChannel(1)
-            self.osc.setScale(self.osc.measPk2Pk()/ajusteEscalaY)
+            self.prepareScaleY()
+            
             self.v1.append(self.osc.measPk2Pk())
             self.osc.changeChannel(2)
             self.osc.setScale(self.osc.measPk2Pk()/ajusteEscalaY)
@@ -106,10 +109,8 @@ class meterTechnician:
     def setFilter(self):
         if self.MyMeasurementsData.HFrejectOn:
             self.osc.setHFrejectOn()
-        else:
-            self.osc.setHFrejectOff()
-        if self.MyMeasurementsData.LFrejectOn:
-            self.osc.setLFrejectOn()
+        if self.MyMeasurementsData.NOISEreject:
+            self.osc.setNOISErejectOn()
 
 
 
@@ -123,8 +124,10 @@ class meterTechnician:
         if self.MyMeasurementsData.DCcouple:
             self.osc.setDCcoupling()
 
-        if self.MyMeasurementsData.ACcouple:
+        elif self.MyMeasurementsData.ACcouple:
             self.osc.setACcoupling()
+        elif self.MyMeasurementsData.LFrejectOn:
+            self.osc.setLFrejectOn()
         
         
     def initializeChannel(self):
@@ -148,7 +151,24 @@ class meterTechnician:
     def debugNumberOfPoints(self):
         if self.MyMeasurementsData.numberOfPoints > maxNpoints:
             self.MyMeasurementsData.numberOfPoints = maxNpoints
+    def waitEstablishment(self, fActual):
+        if self.MyMeasurementsData.autoEstablish:
+            time.sleep(periods2Establish/fActual)
+        else:
+            time.sleep(self.MyMeasurementsData.establish) #tiempo de establecimiento
 
+    def prepareScaleY(self):
+        pk2pk = self.osc.measPk2Pk()
+        counter = 0
+        while (pk2pk != 1e37) or (counter < LOOP_LIMITER):
+            auxScaleX = self.osc.obtainActualScaleY()
+            self.osc.setScale(auxScale*2)
+            count = count +1
+            pk2pk = self.osc.measPk2Pk()
+        self.osc.setScale(pk2pk/ajusteEscalaY)
+        
+
+        
 
 
         
