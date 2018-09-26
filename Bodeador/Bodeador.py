@@ -2,31 +2,25 @@
 
 from dataManager import dataManager
 from meterTechnician import meterTechnician
-#import bodeUserInterface import graphicalInterface
-from userData import instrumentsData
-from userData import measurementsData
+from bodeUserInterface import graphicalInterface
+
 #inicializacion de clases
-#gui = graphicalInterface()
-idata = instrumentsData()
-mdata = 
-ingeniero = meterTechnician()
+gui = graphicalInterface()
+ingeniero = meterTechnician(gui.measData)
 dm = dataManager()
 
-#gui.show() #interfaz con el usuario
-#ingeniero.prepareInstruments(gui.getInstrumentsData())
-
-while gui.userWantContinue():
-    ingeniero.prepareMeasurement(gui.getMeasurementData())
+if gui.pData.userWantContinue:
+    ingeniero.prepareMeasurement()
     ingeniero.meas()
-    dm.calculateMag(ingeniero.getV1(), ingeniero.getV2())
+    dm.calculateMag(ingeniero.v1, ingeniero.v2)
     dm.setFase(ingeniero.getFase())
     dm.setFreq(ingeniero.getFreq())
-    if (gui.doUserWantExcel()):
-        dm.setRutaExcel(gui.getRutaExcel() + ".xlsx")
+    if (gui.pData.userWantExcel):
+        dm.setRutaExcel(gui.pData.excelName+ ".xlsx")
         dm.writeExcel()
-    if (gui.doUserWantGraphMag()):
+    if (gui.pData.userWantGraphMag):
         dm.graphBodeMag()
-    if (gui.doUserWantGraphFase()):
+    if (gui.pData.userWantGraphFase):
         dm.graphBodeFase()
     gui.askToMeasAgain()
     

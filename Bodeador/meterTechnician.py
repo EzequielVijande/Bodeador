@@ -1,6 +1,7 @@
 #osciloscopio
 import visa as v
 import time
+import numpy as np
 from userData import instrumentsData
 from userData import measurementsData
 from instruments import osciloscope
@@ -12,16 +13,16 @@ ajusteEscalaX = 1.5/Ncuadrados
 maxNpoints = 300
 
 class meterTechnician:
-    def _init_(self):
+    def __init__(self,m_Data):
         self.rm = v.ResourceManager()
-        self.instruments = rm.list_resources()
-        self.f = np.array[]
-        self.v1 = np.array[]
-        self.v2 = np.array[]
-        self.fase = np.array[]
+        self.instruments = self.rm.list_resources()
         self.MyInstrumentsData = self.UpdateInstruments()
         self.prepareInstruments()
         self.MyMeasurementsData = measurementsData()
+        self.MyMeasurementsData = m_Data
+        self.v1= []
+        self.v2= []
+        self.fase=[]
 
     def UpdateInstruments(self):
         first_instrument_name = self.instruments[0]     #Obtengo las direcciones de
@@ -42,7 +43,7 @@ class meterTechnician:
 
 
     def prepareInstruments(self):
-        if (MyinstrumentsData.oscIndex)==0:
+        if (self.MyInstrumentsData.oscIndex)==0:
             self.osc = osciloscope(self.first_instrument)
             self.gen = generator(self.second_instrument)
         else:
@@ -50,29 +51,28 @@ class meterTechnician:
             self.gen = generator(self.first_instrument)
         
 
-    def prepareMeasurement(self, measurementData):
-        self.MyMeasurementsData = measurementData
+    def prepareMeasurement(self):
 
         self.prepareGenerator()  #configuracion del generador
 
         self.osc.changeChannel(2) 
         self.initializeChannel()  #configuracion de canal 2
         self.osc.changeChannel(1) 
-        self.initializaChannel()  #configuracion de canal 1
+        self.initializeChannel()  #configuracion de canal 1
 
         self.debugNumberOfPoints()
 
         self.prepareFrequences()  #configuraciones generales del osciloscopio
-        self.osc.prepareTrigger()
-        self.osc.prepareAcquire()
-        self.osc.initializeTimeBase()
+        self.prepareTrigger()
+        self.prepareAcquire()
+        self.initializeTimeBase()
     
     def meas(self):
         self.gen.setOutputOn()
         for i in self.f:
-            self.gen.setFrequency(i)
+            self.gen.setFrequency(int(i))
             time.sleep(self.MyMeasurementsData.establish) #tiempo de establecimiento
-            self.osc.setTimeScale((1/i)*ajusteEscalaX)
+            self.osc.setTimeScale((1/int(i))*ajusteEscalaX)
             self.osc.changeChannel(1)
             self.osc.setScale(self.osc.measPk2Pk()/ajusteEscalaY)
             self.v1.append(self.osc.measPk2Pk())
@@ -103,15 +103,13 @@ class meterTechnician:
         self.osc.setTimeScale((1/self.MyMeasurementsData.fMin)*ajusteEscalaX)
         self.setFilter()
 
-    def setFIlter(self):
+    def setFilter(self):
         if self.MyMeasurementsData.HFrejectOn:
-            self.osc.setHFrejectOn
+            self.osc.setHFrejectOn()
         else:
-            self.osc.setHFrejectOff
+            self.osc.setHFrejectOff()
         if self.MyMeasurementsData.LFrejectOn:
-            self.osc.setLFrejectOn
-        else:
-            self.osc.setLFrejectOff
+            self.osc.setLFrejectOn()
 
 
 
@@ -129,7 +127,7 @@ class meterTechnician:
             self.osc.setACcoupling()
         
         
-    def initializaChannel(self):
+    def initializeChannel(self):
         self.osc.setScale(self.MyMeasurementsData.Vin/ajusteEscalaY)
         self.setProbe() #X1 o X10
         self.osc.setBWL()
@@ -142,10 +140,10 @@ class meterTechnician:
 
     def prepareFrequences(self):
         if (self.MyMeasurementsData.isRangeLinear):
-            self.f = np.linespace(self.MyMeasurementsData.fMin, self.MyMeasurementsData.fMax, 
+            self.f = np.linspace(self.MyMeasurementsData.fMin, self.MyMeasurementsData.fMax, 
                                                         num = self.MyMeasurementsData.numberOfPoints)
-        if (self.MyInstrumentsData.isRangeLog):
-            self.f = np.logspace(self.MyInstrumentsData.fMin, self.MyMeasurementsData.fMax, 
+        if (self.MyMeasurementsData.isRangeLog):
+            self.f = np.logspace(self.MyMeasurementsData.fMin, self.MyMeasurementsData.fMax, 
                                             num = self.MyMeasurementsData.numberOfPoints, base = 10)
 
     def debugNumberOfPoints(self):

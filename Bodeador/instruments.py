@@ -13,59 +13,59 @@ class osciloscope:
     #CHANNELS
 
     def changeChannel(self, numberOfChannel):
-        self.canalString = "CHANnel " + numberOfChannel
+        self.canalString = "CHAN" + str(numberOfChannel)
 
     def setBWL(self):
-        self.osc.write(":" + canalString + ":BWL")
+        self.osc.write(":" + self.canalString + ":BWL")
 
     def setDCcoupling(self):
-        self.osc.write(":" + canalString + ":COUP DC")
+        self.osc.write(":" + self.canalString + ":COUP DC")
 
     def setACcoupling(self):
-        self.osc.write(":" + canalString + ":COUP AC")
+        self.osc.write(":" + self.canalString + ":COUP AC")
 
     def setProbeX1(self):
-        self.osc.write(":" + canalString + ":PROB 1.0E1")
+        self.osc.write(":" + self.canalString + ":PROB 1.0E1")
     def setProbeX10(self):
-        self.osc.write(":" + canalString + ":PROB 1.0E2")
+        self.osc.write(":" + self.canalString + ":PROB 1.0E2")
     
     def setScale(self, scale):
-        self.osc.write(":" + canalString + ":SCAL " + scale)
+        self.osc.write(":" + self.canalString + ":SCAL " + str(scale))
 
     def getScale(self):
-        return self.osc.query_ascii_values(":" + canalString + ":SCAL?")
+        return self.osc.query_ascii_values(":" + self.canalString + ":SCAL?")
 
     def setVoltUnit(self):
-        self.osc.write(":" + canalString + ":UNITs VOLT")
+        self.osc.write(":" + self.canalString + ":UNITs VOLT")
     def setAmpereUnit(self):
-        self.osc.write(":" + canalString + ":UNITs AMP")
+        self.osc.write(":" + self.canalString + ":UNITs AMP")
 
     def setOffset(self, offset):
-        self.osc.write(":" + canalString + ":OFFSet " + offset + " V")
+        self.osc.write(":" + self.canalString + ":OFFSet " + offset + " V")
     def readOffset(self):
-        self.osc.query_ascii_values(":" + canalString + "OFFS?")
+        retrurn (self.osc.query_ascii_values(":" + self.canalString + "OFFS?"))[0]
 
     #QUICK MEAS
 
     def measFase(self, numberOfChannelReference):
-        return self.osc.query_ascii_values("MEAS:PHA? " + "CHANnel " + numberOfChannelReference + self.canalString)
+        return (self.osc.query_ascii_values(":MEAS:PHAS? " + "CHAN" + str(numberOfChannelReference)+"," + self.canalString))[0]
 
     def measPk2Pk(self):
-        return self.osc.query_ascii_values(":MEAS:VPP? " + self.canalString)
+        return (self.osc.query_ascii_values(":MEAS:VPP? " + self.canalString))[0]
 
     #ACQUIRE
 
     def setNaverages(self, n):
-        self.osc.write(":ACQ:COUN " + n)
+        self.osc.write(":ACQ:COUN " + str(n))
 
     def setHighResolution(self):
-        self.osc.write("ACQ:TYPE:HRES")
+        self.osc.write("ACQ:TYPE HRES")
     def setNormal(self):
-        self.osc.write("ACQ:TYPE:NORM")
+        self.osc.write("ACQ:TYPE NORM")
     def setAverage(self):
-        self.osc.write("ACQ:TYPE:AVER")
+        self.osc.write("ACQ:TYPE AVER")
     def setPeakDetect(self):
-        self.osc.write("ACQ:TYPE:PEAK")
+        self.osc.write("ACQ:TYPE PEAK")
         
     #TIMEBASE
 
@@ -76,12 +76,19 @@ class osciloscope:
         self.osc.write(":TIM:POS 0")
 
     def setTimeScale(self, t):
-        self.osc.write(":TIM:SCAL " + t)
+        self.osc.write(":TIM:SCAL " + str(t))
 
     #TRIGGER
 
     def setTriggerCero(self):
-        self.osc.write(":TRIG[:EDGE]:LEVel 0")
+        self.osc.write(":TRIG:LEVel 0")
+    def setHFrejectOn(self):
+        self.osc.write(":TRIG:HFReject 1")
+    def setHFrejectOff(self):
+        self.osc.write(":TRIG:HFReject 0")
+    def setLFrejectOn(self):
+        self.osc.write("TRIG:COUP LFReject")
+
 
 
 
@@ -90,6 +97,7 @@ class generator:
         self.gen= gen_res
         self.gen.write("OUTP:LOAD INF")
         self.gen.write("FUNC SIN")
+        self.setOutputOff()
 
     def setVoltage(self,vol):
         self.gen.write("VOLT "+str(vol))
