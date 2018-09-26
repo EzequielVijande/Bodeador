@@ -3,13 +3,12 @@
 from dataManager import dataManager
 from meterTechnician import meterTechnician
 from bodeUserInterface import graphicalInterface
-#inicializacion de clases
-gui = graphicalInterface()
-ingeniero = meterTechnician(gui.measData)
-dm = dataManager()
 
+gui = graphicalInterface()
 
 if gui.pData.userWantContinue:
+    ingeniero = meterTechnician(gui.measData)
+    dm = dataManager()
     ingeniero.prepareMeasurement()
     ingeniero.meas()
     dm.calculateMag(ingeniero.v1, ingeniero.v2)
