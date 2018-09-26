@@ -106,7 +106,7 @@ class graphicalInterface:
         elif aux == KHz:
             self.isMinScaleHz = False
             self.isMinScaleKHz = True
-        self.setFinalfMin
+        self.setFinalfMin()
 
     def setFinalfMin(self):
         if self.isMinScaleHz:
@@ -124,12 +124,13 @@ class graphicalInterface:
             self.isMaxScaleHz = False
             self.isMaxScaleKHz = True
             
-        self.setFinalfMax
+        self.setFinalfMax()
 
     def setFinalfMax(self):
         if self.isMaxScaleHz:
             self.measData.fMax = self.fMax
         elif self.isMaxScaleKHz:
+            
             self.measData.fMax = (self.fMax * 1000)
 
     def refreshCoupling(self):

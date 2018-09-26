@@ -25,9 +25,9 @@ class osciloscope:
         self.osc.write(":" + self.canalString + ":COUP AC")
 
     def setProbeX1(self):
-        self.osc.write(":" + self.canalString + ":PROB 1.0E1")
+        self.osc.write(":" + self.canalString + ":PROB 1.0E0")
     def setProbeX10(self):
-        self.osc.write(":" + self.canalString + ":PROB 1.0E2")
+        self.osc.write(":" + self.canalString + ":PROB 1.0E1")
     
     def setScale(self, scale):
         self.osc.write(":" + self.canalString + ":SCAL " + str(scale))

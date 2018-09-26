@@ -8,7 +8,7 @@ from instruments import osciloscope
 from instruments import generator
 
 Ncuadrados = 10 #numero de cuadrados del osciloscopio 
-ajusteEscalaY = Ncuadrados - 2
+ajusteEscalaY = (Ncuadrados - 4)
 ajusteEscalaX = 1.5/Ncuadrados
 maxNpoints = 300
 
@@ -143,9 +143,8 @@ class meterTechnician:
             self.f = np.linspace(self.MyMeasurementsData.fMin, self.MyMeasurementsData.fMax, 
                                                         num = self.MyMeasurementsData.numberOfPoints)
         if (self.MyMeasurementsData.isRangeLog):
-            self.f = np.logspace(self.MyMeasurementsData.fMin, self.MyMeasurementsData.fMax, 
-                                            num = self.MyMeasurementsData.numberOfPoints, base = 10)
-
+            self.f = np.geomspace(self.MyMeasurementsData.fMin, self.MyMeasurementsData.fMax, 
+                                            self.MyMeasurementsData.numberOfPoints)
     def debugNumberOfPoints(self):
         if self.MyMeasurementsData.numberOfPoints > maxNpoints:
             self.MyMeasurementsData.numberOfPoints = maxNpoints

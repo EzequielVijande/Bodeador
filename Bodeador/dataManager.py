@@ -28,27 +28,30 @@ class dataManager:
         self.mag = mag
 
     def calculateMag(self, vin, vout):
-        self.mag = 20*np.log10(vout/vin)
+        self.mag = 20*np.log10(np.asarray(vout)/np.asarray(vin))
 
     def setFase(self, fase):
-        self.fase = fase
+        self.fase = np.asarray(fase)
 
     def setFreq(self, freq):
         self.frecuencias = freq
 
     def graphBodeMag(self):
-        plt.semilogx(self.f, self.mag)
+        plt.figure(1)
+        plt.semilogx(self.frecuencias, self.mag)
         plt.xlabel("Frecuencia (Hz)")
         plt.ylabel("Magnitud (dB)")
         plt.title("Diagrama de Bode - Magnitud")
-        datacursos(display = 'multiple', draggable = True)
-
+        datacursor(display = 'multiple', draggable = True)
+       
     def graphBodeFase(self):
-        plt.semilogx(self.f, self.fase)
+        plt.figure(2)
+        plt.semilogx(self.frecuencias, self.fase)
         plt.xlabel("Frecuencia (Hz)")
         plt.ylabel("Fase (grados)")
         plt.title("Diagrama de Bode - Fase")
-        datacursos(display = 'multiple', draggable = True)
+        datacursor(display = 'multiple', draggable = True)
+        
 
     def setRutaExcel(self, ruta):
         self.rutaExcel = ruta
