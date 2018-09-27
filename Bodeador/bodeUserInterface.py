@@ -45,7 +45,6 @@ class graphicalInterface:
         self.raiz.resizable(width=True,height=True)
         self.raiz.title('Auto Bode Software')
         self.placeRadioButtons()
-        print("")
         self.placeButtons()
         self.placeCheckButtons()
         self.placeEntryText()
@@ -76,20 +75,20 @@ class graphicalInterface:
         self.rButton_couplingDC = tk.Radiobutton(self.raiz, text="couple DC", 
                                 variable = self.coupling, value = DC, command = self.refreshCoupling).grid(row =4, column = 5)
         self. rButton_LFreject = tk.Radiobutton(self.raiz, text = "LF reject",
-                                variable = self.coupling, value = LFreject, command = self.refreshCoupling).grid(row = 5, column = 5)
+                                variable = self.filter, value = LFreject, command = self.refreshCoupling).grid(row = 5, column = 5)
 
-        self.labelAcq = tk.Label(self.raiz, text = "Acquire").grid(row = 6, column = 4)
+        self.labelAcq = tk.Label(self.raiz, text = "Acquire").grid(row = 5, column = 4)
         self.acq = tk.IntVar()
         self.rButton_acqHRES = tk.Radiobutton(self.raiz, text="High Resolution", variable = self.acq, 
-                                value = HRES, command = self.refreshAcqMode).grid(row =6, column = 5)
+                                value = HRES, command = self.refreshAcqMode).grid(row =5, column = 5)
         self.rButton_acqNORM = tk.Radiobutton(self.raiz, text="Normal Resolution", variable = self.acq, 
-                                value = NORM, command = self.refreshAcqMode).grid(row =7, column = 5)
+                                value = NORM, command = self.refreshAcqMode).grid(row =6, column = 5)
 
         self.rButton_acqPEAK = tk.Radiobutton(self.raiz, text="Peak Detect", variable = self.acq, 
-                            value = PEAK, command = self.refreshAcqMode).grid(row =7, column = 4)
+                            value = PEAK, command = self.refreshAcqMode).grid(row =7, column = 5)
 
         self.rButton_acqAVER = tk.Radiobutton(self.raiz, text="Average", variable = self.acq, 
-                            value = AVER, command = self.refreshAcqMode).grid(row =8, column = 4)
+                            value = AVER, command = self.refreshAcqMode).grid(row =8, column = 5)
 
         self.labelSweepMode = tk.Label(self.raiz, text = "Sweep Mode").grid(row = 1, column = 4)
         self.sweepType = tk.IntVar()
@@ -104,6 +103,7 @@ class graphicalInterface:
                                     value = X1, command = self.refreshProbe).grid(row = 2, column = 6)
         self.rButton_probeX10 = tk.Radiobutton(self.raiz, text = "X10", variable = self.probe, 
                                     value = X10, command = self.refreshProbe).grid(row = 3, column = 6)
+        self.labelFilters = tk.Label(self.raiz, text = "Filters").grid(row = 4, column = 6)
         
 
     def refreshFminScale(self):
@@ -247,7 +247,6 @@ class graphicalInterface:
         self.graphFase_checkButton = tk.Checkbutton(self.raiz, text="Graph phase diagram", 
                                                                         variable=self.bool_graphFase, command = self.refreshGraphFasePreference).grid(row = 9, column = 6)
 
-        self.labelFilters = tk.Label(self.raiz, text = "Filters").grid(row = 4, column = 6)
         self.bool_HFreject = tk.BooleanVar()
         self.Hfreject_checkButton = tk.Checkbutton(self.raiz, text = "HF reject", 
                                                 variable = self.bool_HFreject, command = self.refreshHFreject).grid(row = 5, column = 6)
@@ -337,14 +336,14 @@ class graphicalInterface:
         
     def placeComboBoxes(self):
         self.labelTime2Establish = tk.Label(self.raiz, text = "Time to Establishment (seg)").grid(row = 11, column = 1)
-        self.comboTime2Establish = ttk.Combobox(self.raiz, width = 5)
+        self.comboTime2Establish = ttk.Combobox(self.raiz)
         self.comboTime2Establish["values"] = ['auto', '0.5', '1', '1.5', '2', '2.5', '3', '4', '5', '10', '15', '20'] #tiempo en segundos
         self.comboTime2Establish.current(0)
         self.comboTime2Establish.grid(row = 11, column = 2)
-        self.comboNaverages = ttk.Combobox(self.raiz, text = "N average", width = 5)
+        self.comboNaverages = ttk.Combobox(self.raiz)
         self.comboNaverages["values"] = ['2', '4', '8', '16', '32', '64', '128', '256', '512', '1024']
-        self.comboNaverages.current(1)
-        self.comboNaverages.grid(row = 8, column = 5)
+        self.comboTime2Establish.current(1)
+        self.comboNaverages.grid(row = 9, column = 5)
 
     def refreshTime2Establish(self):
         if self.comboTime2Establish.get() == 'auto':
