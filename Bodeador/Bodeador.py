@@ -3,18 +3,11 @@
 from dataManager import dataManager
 from meterTechnician import meterTechnician
 from bodeUserInterface import graphicalInterface
-<<<<<<< HEAD
 import matplotlib.pyplot as plt
-=======
->>>>>>> parent of 61d96cc... se termina la gui layout, falta debbuggearla nuevamente.
 #inicializacion de clases
 gui = graphicalInterface()
 ingeniero = meterTechnician(gui.measData)
 dm = dataManager()
-<<<<<<< HEAD
-=======
-
->>>>>>> parent of 61d96cc... se termina la gui layout, falta debbuggearla nuevamente.
 
 if gui.pData.userWantContinue:
     ingeniero.prepareMeasurement()
