@@ -45,9 +45,6 @@ class osciloscope:
     def readOffset(self):
         retrurn (self.osc.query_ascii_values(":" + self.canalString + "OFFS?"))[0]
 
-    def setNOISErejectOn(self):
-        print("Sorry, noise reject cannot be seted on")
-
     #QUICK MEAS
 
     def measFase(self, numberOfChannelReference):
@@ -55,9 +52,6 @@ class osciloscope:
 
     def measPk2Pk(self):
         return (self.osc.query_ascii_values(":MEAS:VPP? " + self.canalString))[0]
-
-    def obtainActualScaleY(self):
-        print("Sorry, obtainScaleY cannot be implemented")
 
     #ACQUIRE
 

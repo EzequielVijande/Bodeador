@@ -56,6 +56,3 @@ class dataManager:
     def setRutaExcel(self, ruta):
         self.rutaExcel = ruta
 
-    def show(self):
-        plt.show()
-
