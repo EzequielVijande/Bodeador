@@ -69,7 +69,13 @@ class graphicalInterface:
                                 variable = self.coupling, value = AC, command = self.refreshCoupling).grid(row =3, column = 5)
         self.rButton_couplingDC = tk.Radiobutton(self.raiz, text="couple DC", 
                                 variable = self.coupling, value = DC, command = self.refreshCoupling).grid(row =4, column = 5)
+<<<<<<< HEAD
         
+=======
+        self. rButton_LFreject = tk.Radiobutton(self.raiz, text = "LF reject",
+                                variable = self.filter, value = LFreject, command = self.refreshCoupling).grid(row = 5, column = 5)
+
+>>>>>>> parent of 61d96cc... se termina la gui layout, falta debbuggearla nuevamente.
         self.labelAcq = tk.Label(self.raiz, text = "Acquire").grid(row = 5, column = 4)
         self.acq = tk.IntVar()
         self.rButton_acqHRES = tk.Radiobutton(self.raiz, text="High Resolution", variable = self.acq, 
@@ -95,7 +101,12 @@ class graphicalInterface:
         self.rButton_probeX1 = tk.Radiobutton(self.raiz, text = "X1", variable = self.probe, 
                                     value = X1, command = self.refreshProbe).grid(row = 4, column = 6)
         self.rButton_probeX10 = tk.Radiobutton(self.raiz, text = "X10", variable = self.probe, 
+<<<<<<< HEAD
                                     value = X10, command = self.refreshProbe).grid(row = 5, column = 6)
+=======
+                                    value = X10, command = self.refreshProbe).grid(row = 3, column = 6)
+        self.labelFilters = tk.Label(self.raiz, text = "Filters").grid(row = 4, column = 6)
+>>>>>>> parent of 61d96cc... se termina la gui layout, falta debbuggearla nuevamente.
         
 
     def refreshFminScale(self):
@@ -219,6 +230,17 @@ class graphicalInterface:
         self.graphFase_checkButton = tk.Checkbutton(self.raiz, text="Graph phase diagram", 
                                                                         variable=self.bool_graphFase, command = self.refreshGraphFasePreference).grid(row = 9, column = 6)
 
+<<<<<<< HEAD
+=======
+        self.bool_HFreject = tk.BooleanVar()
+        self.Hfreject_checkButton = tk.Checkbutton(self.raiz, text = "HF reject", 
+                                                variable = self.bool_HFreject, command = self.refreshHFreject).grid(row = 5, column = 6)
+        self.bool_NOISEreject = tk.BooleanVar()
+        self.Hfreject_checkButton = tk.Checkbutton(self.raiz, text = "Noise reject", 
+                                                variable = self.bool_NOISEreject, command = self.refreshNOISEreject).grid(row = 6, column = 6)
+        
+
+>>>>>>> parent of 61d96cc... se termina la gui layout, falta debbuggearla nuevamente.
     def refreshExcelPreference(self):
         self.pData.userWantExcel = self.bool_excel.get()
 
@@ -298,6 +320,13 @@ class graphicalInterface:
         self.comboTime2Establish["values"] = ['auto', '0.5', '1', '1.5', '2', '2.5', '3', '4', '5', '10', '15', '20'] #tiempo en segundos
         self.comboTime2Establish.current(2)
         self.comboTime2Establish.grid(row = 11, column = 2)
+<<<<<<< HEAD
+=======
+        self.comboNaverages = ttk.Combobox(self.raiz)
+        self.comboNaverages["values"] = ['2', '4', '8', '16', '32', '64', '128', '256', '512', '1024']
+        self.comboTime2Establish.current(1)
+        self.comboNaverages.grid(row = 9, column = 5)
+>>>>>>> parent of 61d96cc... se termina la gui layout, falta debbuggearla nuevamente.
 
     def refreshTime2Establish(self):
         if self.comboTime2Establish.get() == 'auto':
