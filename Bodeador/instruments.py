@@ -57,7 +57,7 @@ class osciloscope:
         return (self.osc.query_ascii_values(":MEAS:VPP? " + self.canalString))[0]
 
     def obtainActualScaleY(self):
-        print("Sorry, obtainScaleY cannot be implemented")
+        return (self.osc.query_ascii_values(":"+self.canalString+":SCAL?"))[0]
 
     #ACQUIRE
 
@@ -94,6 +94,9 @@ class osciloscope:
         self.osc.write(":TRIG:HFReject 0")
     def setLFrejectOn(self):
         self.osc.write("TRIG:COUP LFReject")
+
+    
+        
 
 
 

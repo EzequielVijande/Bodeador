@@ -161,11 +161,11 @@ class meterTechnician:
         pk2pk = self.osc.measPk2Pk()
         counter = 0
         while (pk2pk != 1e37) or (counter < LOOP_LIMITER):
-            auxScaleX = self.osc.obtainActualScaleY()
-            self.osc.setScale(auxScale*2)
-            count = count +1
+            auxScaleY = self.osc.obtainActualScaleY()
+            self.osc.setScale(auxScaleY*2)
+            counter = counter +1
             pk2pk = self.osc.measPk2Pk()
-        self.osc.setScale(pk2pk/ajusteEscalaY)
+            self.osc.setScale(int(pk2pk/int(auxScaleY)))
         
 
         
