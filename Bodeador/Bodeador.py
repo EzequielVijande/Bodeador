@@ -3,12 +3,13 @@
 from dataManager import dataManager
 from meterTechnician import meterTechnician
 from bodeUserInterface import graphicalInterface
-
+import matplotlib.pyplot as plt
+#inicializacion de clases
 gui = graphicalInterface()
+ingeniero = meterTechnician(gui.measData)
+dm = dataManager()
 
 if gui.pData.userWantContinue:
-    ingeniero = meterTechnician(gui.measData)
-    dm = dataManager()
     ingeniero.prepareMeasurement()
     ingeniero.meas()
     dm.calculateMag(ingeniero.v1, ingeniero.v2)
@@ -21,8 +22,7 @@ if gui.pData.userWantContinue:
         dm.graphBodeMag()
     if (gui.pData.userWantGraphFase):
         dm.graphBodeFase()
-    if (gui.pData.userWantGraphFase or gui.pData.userWantGraphMag):
-        dm.show()
+    plt.show()
     
 
 

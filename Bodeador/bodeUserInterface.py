@@ -5,13 +5,11 @@ from userData import preferenceData
 import tkinter as tk 
 from tkinter import ttk
 from tkinter import *
-from tkinter import messagebox
 
 Hz = 1
 KHz = 2
 AC = 1
 DC = 2
-LFreject = 3
 HRES = 1
 NORM = 2
 PEAK = 3
@@ -21,14 +19,11 @@ LINEAR = 2
 X1 = 1
 X10 = 2
 
-
 class graphicalInterface:
     def __init__(self):
         #userData a completar
         self.measData = measurementsData()
         self.pData = preferenceData()
-
-        self.errorMessage = ""
 
         #variables auxiliares vinculadas a los resources gráficos
         self.isMinScaleHz = True
@@ -45,7 +40,6 @@ class graphicalInterface:
         self.raiz.resizable(width=True,height=True)
         self.raiz.title('Auto Bode Software')
         self.placeRadioButtons()
-        print("")
         self.placeButtons()
         self.placeCheckButtons()
         self.placeEntryText()
@@ -75,21 +69,19 @@ class graphicalInterface:
                                 variable = self.coupling, value = AC, command = self.refreshCoupling).grid(row =3, column = 5)
         self.rButton_couplingDC = tk.Radiobutton(self.raiz, text="couple DC", 
                                 variable = self.coupling, value = DC, command = self.refreshCoupling).grid(row =4, column = 5)
-        self. rButton_LFreject = tk.Radiobutton(self.raiz, text = "LF reject",
-                                variable = self.coupling, value = LFreject, command = self.refreshCoupling).grid(row = 5, column = 5)
-
-        self.labelAcq = tk.Label(self.raiz, text = "Acquire").grid(row = 6, column = 4)
+        
+        self.labelAcq = tk.Label(self.raiz, text = "Acquire").grid(row = 5, column = 4)
         self.acq = tk.IntVar()
         self.rButton_acqHRES = tk.Radiobutton(self.raiz, text="High Resolution", variable = self.acq, 
-                                value = HRES, command = self.refreshAcqMode).grid(row =6, column = 5)
+                                value = HRES, command = self.refreshAcqMode).grid(row =5, column = 5)
         self.rButton_acqNORM = tk.Radiobutton(self.raiz, text="Normal Resolution", variable = self.acq, 
-                                value = NORM, command = self.refreshAcqMode).grid(row =7, column = 5)
+                                value = NORM, command = self.refreshAcqMode).grid(row =6, column = 5)
 
         self.rButton_acqPEAK = tk.Radiobutton(self.raiz, text="Peak Detect", variable = self.acq, 
-                            value = PEAK, command = self.refreshAcqMode).grid(row =7, column = 4)
+                            value = PEAK, command = self.refreshAcqMode).grid(row =7, column = 5)
 
         self.rButton_acqAVER = tk.Radiobutton(self.raiz, text="Average", variable = self.acq, 
-                            value = AVER, command = self.refreshAcqMode).grid(row =8, column = 4)
+                            value = AVER, command = self.refreshAcqMode).grid(row =8, column = 5)
 
         self.labelSweepMode = tk.Label(self.raiz, text = "Sweep Mode").grid(row = 1, column = 4)
         self.sweepType = tk.IntVar()
@@ -98,12 +90,12 @@ class graphicalInterface:
         self.rButton_sweepLinear = tk.Radiobutton(self.raiz, text="Linear sweep", 
                                 variable = self.sweepType, value = LINEAR, command = self.refreshSweepType).grid(row =2, column = 5)
 
-        self.labelProbe = tk.Label(self.raiz, text = "Probe").grid(row = 1, column = 6)
+        self.labelProbe = tk.Label(self.raiz, text = "Probe").grid(row = 3, column = 6)
         self.probe = tk.IntVar()
         self.rButton_probeX1 = tk.Radiobutton(self.raiz, text = "X1", variable = self.probe, 
-                                    value = X1, command = self.refreshProbe).grid(row = 2, column = 6)
+                                    value = X1, command = self.refreshProbe).grid(row = 4, column = 6)
         self.rButton_probeX10 = tk.Radiobutton(self.raiz, text = "X10", variable = self.probe, 
-                                    value = X10, command = self.refreshProbe).grid(row = 3, column = 6)
+                                    value = X10, command = self.refreshProbe).grid(row = 5, column = 6)
         
 
     def refreshFminScale(self):
@@ -138,6 +130,7 @@ class graphicalInterface:
         if self.isMaxScaleHz:
             self.measData.fMax = self.fMax
         elif self.isMaxScaleKHz:
+            
             self.measData.fMax = (self.fMax * 1000)
 
     def refreshCoupling(self):
@@ -145,17 +138,10 @@ class graphicalInterface:
         if aux == AC:
             self.measData.ACcouple = True
             self.measData.DCcouple = False
-            self.measData.LFrejectOn = False
 
         elif aux == DC:
             self.measData.ACcouple = False
             self.measData.DCcouple = True
-            self.measData.LFrejectOn = False
-        elif aux == LFreject:
-            self.measData.ACcouple = False
-            self.measData.DCcouple = False
-            self.measData.LFrejectOn = True
-
 
 
     def refreshAcqMode(self):
@@ -210,26 +196,12 @@ class graphicalInterface:
         self.botonQuitProgram = tk.Button(self.raiz, text = "Quit", command=self.quitProgram_button).grid(row = 14, column = 5)
 
     def goBode_button(self):
-
-        if self.isAllOk():
-            self.refreshTime2Establish() #se obtiene el valor de un combobox ya que dicho combobox no puede
-                                    #obtener su valor por si solo
-            self.refreshNaver()
-            self.setExcelName()  #se lee un textmessage
-            self.pData.userWantContinue = True
-            self.raiz.destroy()
-        else:
-            messagebox.showinfo("bodeSoftware message", self.errorMessage)
         
-
-    def isAllOk(self):
-        ret = True #se comienza suponiendo que todo esta bien
-        if (self.measData.fMin > self.measData.fMax):
-            self.errorMessage = "The programm cannot 'Go Bode' because stop frecuency is lower than start frecuency"
-            ret = False
-
-        return ret
-
+        self.refreshTime2Establish() #se obtiene el valor de un combobox ya que dicho combobox no puede
+                                    #obtener su valor por si solo
+        self.setExcelName()  #se lee un textmessage
+        self.pData.userWantContinue = True
+        self.raiz.destroy()
 
     def quitProgram_button(self):
         self.pData.userWantContinue = False
@@ -247,15 +219,6 @@ class graphicalInterface:
         self.graphFase_checkButton = tk.Checkbutton(self.raiz, text="Graph phase diagram", 
                                                                         variable=self.bool_graphFase, command = self.refreshGraphFasePreference).grid(row = 9, column = 6)
 
-        self.labelFilters = tk.Label(self.raiz, text = "Filters").grid(row = 4, column = 6)
-        self.bool_HFreject = tk.BooleanVar()
-        self.Hfreject_checkButton = tk.Checkbutton(self.raiz, text = "HF reject", 
-                                                variable = self.bool_HFreject, command = self.refreshHFreject).grid(row = 5, column = 6)
-        self.bool_NOISEreject = tk.BooleanVar()
-        self.Hfreject_checkButton = tk.Checkbutton(self.raiz, text = "Noise reject", 
-                                                variable = self.bool_NOISEreject, command = self.refreshNOISEreject).grid(row = 6, column = 6)
-        
-
     def refreshExcelPreference(self):
         self.pData.userWantExcel = self.bool_excel.get()
 
@@ -264,12 +227,6 @@ class graphicalInterface:
 
     def refreshGraphFasePreference(self):
         self.pData.userWantGraphFase = self.bool_graphFase.get()
-
-    def refreshHFreject(self):
-        self.measData.HFrejectOn = self.bool_HFreject.get()
-    def refreshNOISEreject(self):
-        self.measData.NOISErejectOn = self.bool_HFreject.get()
-        
 
     def placeEntryText(self):
         self.excelName = tk.StringVar()
@@ -283,13 +240,13 @@ class graphicalInterface:
         self.label_freqTitle = tk.Label(self.raiz, text = "Frequency").grid(row = 1, column = 1)
         self.label_startF = tk.Label(self.raiz, text = "Start Frequency").grid(row = 2, column = 1)
         self.slide_fmin = tk.IntVar()
-        self.startF_slider = tk.Scale(self.raiz, from_=1, to=5000, length = 200, orient=HORIZONTAL, 
+        self.startF_slider = tk.Scale(self.raiz, from_=0, to=5000, length = 200, orient=HORIZONTAL, 
                     variable = self.slide_fmin, command=self.refreshStartF_slider).grid(row = 2, column = 2)
     
         
         self.label_stopF = tk.Label(self.raiz, text = "Stop Frequency").grid(row = 4, column = 1)
         self.slide_fmax = tk.IntVar()
-        self.stopF_slider = tk.Scale(self.raiz, from_=1, to=5000, length =200, orient=HORIZONTAL, 
+        self.stopF_slider = tk.Scale(self.raiz, from_=0, to=5000, length =200, orient=HORIZONTAL, 
                     variable = self.slide_fmax, command=self.refreshStopF_slider).grid(row = 4, column = 2)
         
         self.label_inputTitle = tk.Label(self.raiz, text = "Input Signal").grid(row = 6, column = 1)
@@ -337,14 +294,10 @@ class graphicalInterface:
         
     def placeComboBoxes(self):
         self.labelTime2Establish = tk.Label(self.raiz, text = "Time to Establishment (seg)").grid(row = 11, column = 1)
-        self.comboTime2Establish = ttk.Combobox(self.raiz, width = 5)
+        self.comboTime2Establish = ttk.Combobox(self.raiz)
         self.comboTime2Establish["values"] = ['auto', '0.5', '1', '1.5', '2', '2.5', '3', '4', '5', '10', '15', '20'] #tiempo en segundos
-        self.comboTime2Establish.current(0)
+        self.comboTime2Establish.current(2)
         self.comboTime2Establish.grid(row = 11, column = 2)
-        self.comboNaverages = ttk.Combobox(self.raiz, text = "N average", width = 5)
-        self.comboNaverages["values"] = ['2', '4', '8', '16', '32', '64', '128', '256', '512', '1024']
-        self.comboNaverages.current(1)
-        self.comboNaverages.grid(row = 8, column = 5)
 
     def refreshTime2Establish(self):
         if self.comboTime2Establish.get() == 'auto':
@@ -352,10 +305,6 @@ class graphicalInterface:
         else:
             self.measData.establish = float(self.comboTime2Establish.get())
             self.measData.autoEstablish = False
-
-    def refreshNaver(self):
-        self.measData.nAverages = int(self.comboNaverages.get())
-        
         
         
     

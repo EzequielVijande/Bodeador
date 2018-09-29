@@ -17,7 +17,7 @@ class measurementsData:
         self.Voffset = 0 #Volts
 
         self.HFrejectOn = False
-        self.NOISEreject = False
+        self.LFrejectOn = False
 
         self.establish = 1 #segundos
         self.autoEstablish = False
@@ -33,7 +33,6 @@ class measurementsData:
 
         self.ACcouple = False
         self.DCcouple = True
-        self.LFrejectOn = False
 
 class preferenceData:
     def __init__(self):
